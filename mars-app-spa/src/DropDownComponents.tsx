@@ -4,6 +4,7 @@ import { getCameras, SelectOption } from "./getCameraHelper";
 import { getPhotos } from "./getPhotosHelper";
 import { Camera } from "./getCameraHelper";
 import { PhotoContext } from "./DropDownAndPhotoComponent";
+import { StyledSelect } from "./Components/MarsImage/styles";
 
 const roverNames: SelectOption[] = [
   { value: "Curiosity", label: "Curiosity" },
@@ -45,7 +46,9 @@ const FirstChoice: React.FC = () => {
   let { cameralist, rovername, setcameralist, setrovername } =
     useContext(RoverContext);
   return (
-    <div className="App-header">
+    <div>
+      Select a Rover
+      <p>
       <Select
         options={roverNames}
         autosize={true}
@@ -56,6 +59,7 @@ const FirstChoice: React.FC = () => {
           setcameralist(cameralist);
         }}
       />
+      </p>
     </div>
   );
 };
@@ -65,7 +69,8 @@ const SecondChoice: React.FC = () => {
   let { photoList, setphotolist } = useContext(PhotoContext);
   return (
     <div>
-      Select a camera
+      Select a Camera
+      <p>
       <Select
         options={cameralist}
         autosize={true}
@@ -75,6 +80,7 @@ const SecondChoice: React.FC = () => {
           setphotolist(photoList);
         }}
       />
+      </p>
     </div>
   );
 };

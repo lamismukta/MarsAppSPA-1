@@ -23,8 +23,9 @@ function App() {
       {/* <header className="App-header">
       </header> */}
       <h1>Pictures from Mars</h1>
-      Select a rover
+      <div className = "App">
       <DropDownPhotos />
+      </div>
     </div>
   );
 }
