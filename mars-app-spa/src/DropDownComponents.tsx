@@ -6,6 +6,7 @@ import { Camera } from "./getCameraHelper";
 import { PhotoContext } from "./DropDownAndPhotoComponent";
 import { StyledSelect } from "./Components/MarsImage/styles";
 import NumericInput from "react-numeric-input";
+import { getRovers, Rover } from "./roverHelper";
 
 const roverNames: SelectOption[] = [
   { value: "Curiosity", label: "Curiosity" },
@@ -40,7 +41,7 @@ const DropDown: React.FC = () => {
   const RoverProvider = RoverContext.Provider;
 
   return (
-    <div>
+    <div className="drop-downs">
       <RoverProvider value={{ cameralist, rovername, cameraname, setcameralist, setrovername, setcameraname }}>
         <FirstChoice />
         <SecondChoice />
@@ -53,12 +54,12 @@ const DropDown: React.FC = () => {
 const FirstChoice: React.FC = () => {
   let { cameralist, rovername, setcameralist, setrovername } =
     useContext(RoverContext);
+    
   return (
-    <div style={{width: '1000px'}}>
+    <div className = 'select-bar'>
       Select a Rover
       <p>
       <Select
-        style={{width: '1000px'}}
         options={roverNames}
         autosize={true}
         clearable={true}
@@ -66,6 +67,17 @@ const FirstChoice: React.FC = () => {
           setrovername(response ? response.value : "");
           cameralist = await getCameras(response?.value);
           setcameralist(cameralist);
+
+          //Shove this in a useEffect
+          var roverData: any = await getRovers();
+          console.log(roverData.rovers);
+          for(var rover of roverData.rovers) {
+            if(response){
+              if(rover.name == response.value) {
+                console.log(rover.max_sol);
+              }
+            }
+          }
         }}
       />
       </p>
@@ -76,7 +88,7 @@ const FirstChoice: React.FC = () => {
 const SecondChoice: React.FC = () => {
   var { cameralist, rovername , cameraname, setcameraname} = useContext(RoverContext);
   return (
-    <div style={{width: '1000px'}}>
+    <div className = 'select-bar'>
       Select a Camera
       <p>
       <Select
@@ -95,6 +107,8 @@ const SecondChoice: React.FC = () => {
 const SolInput: React.FC = () => {
   var { photoList, setphotolist, sol, setsol } = useContext(PhotoContext);
   var { rovername, cameraname } = useContext(RoverContext);
+
+
   return (
     <div>
       <p>Enter Sol</p>
@@ -105,7 +119,6 @@ const SolInput: React.FC = () => {
             setsol(response ?? 1000);
             photoList = await getPhotos(cameraname, rovername, sol);
             setphotolist(photoList);
-            console.log(photoList);
           }}
         />
       </p>

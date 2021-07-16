@@ -37,16 +37,19 @@ export const DropDownPhotos: React.FC = () => {
   );
 };
 
-const Photos: React.FC = () => {
+const Photos: React.FC = () => { 
   var { photoList } = useContext(PhotoContext);
   const len = Math.min(photoList.length, 5);
   if (len === 0) {
     return <p> No photos found! </p>;
   } else
     return (
-      <div>
+      <div className = 'photo-gallery'>
         {photoList.slice(0, len).map((photo) => (
-          <MarsImage src={photo.img_src} width="15%" />
+            <div className = 'photo'>
+          <MarsImage src={photo.img_src} />
+          <p className = 'caption'> Earth Date: {photo.earth_date} </p>
+          </div>
         ))}
       </div>
     );
