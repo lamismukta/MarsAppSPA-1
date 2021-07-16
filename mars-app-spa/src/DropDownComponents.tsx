@@ -13,11 +13,13 @@ const roverNames: SelectOption[] = [
   { value: "Perseverance", label: "Perseverance" },
 ];
 
-const RoverContext = createContext({
+export const RoverContext = createContext({
   cameralist: [{ value: "", label: "" }],
   rovername: "",
+  cameraname: '',
   setcameralist: (value: SelectOption[]) => {},
   setrovername: (name: string) => {},
+  setcameraname: (name: string) => {}
 });
 
 const DropDown: React.FC = () => {
@@ -29,15 +31,19 @@ const DropDown: React.FC = () => {
   function setrovername(name: string) {
     setRoverName(name);
   }
+  var [cameraname, setCameraName] = useState("");
+  function setcameraname(name: string) {
+    setCameraName(name);
+  }
 
-  const Provider = RoverContext.Provider;
+  const RoverProvider = RoverContext.Provider;
 
   return (
     <div>
-      <Provider value={{ cameralist, rovername, setcameralist, setrovername }}>
+      <RoverProvider value={{ cameralist, rovername, cameraname, setcameralist, setrovername, setcameraname }}>
         <FirstChoice />
         <SecondChoice />
-      </Provider>
+      </RoverProvider>
     </div>
   );
 };
@@ -46,10 +52,11 @@ const FirstChoice: React.FC = () => {
   let { cameralist, rovername, setcameralist, setrovername } =
     useContext(RoverContext);
   return (
-    <div>
+    <div style={{width: '1000px'}}>
       Select a Rover
       <p>
       <Select
+        style={{width: '1000px'}}
         options={roverNames}
         autosize={true}
         clearable={true}
@@ -65,10 +72,10 @@ const FirstChoice: React.FC = () => {
 };
 
 const SecondChoice: React.FC = () => {
-  let { cameralist, rovername } = useContext(RoverContext);
-  let { photoList, setphotolist } = useContext(PhotoContext);
+  let { cameralist, rovername , cameraname, setcameraname} = useContext(RoverContext);
+  let { photoList, setphotolist, sol} = useContext(PhotoContext);
   return (
-    <div>
+    <div style={{width: '1000px'}}>
       Select a Camera
       <p>
       <Select
@@ -76,8 +83,9 @@ const SecondChoice: React.FC = () => {
         autosize={true}
         clearable={true}
         onChange={async (response) => {
-          photoList = await getPhotos(response?.value, rovername);
-          setphotolist(photoList);
+          setcameraname(cameraname);
+           photoList = await getPhotos(response?.value, rovername, sol);
+           setphotolist(photoList);
         }}
       />
       </p>

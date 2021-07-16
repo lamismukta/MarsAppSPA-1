@@ -8,8 +8,8 @@ export type Photo ={
     earth_date: string
 }
 
-  export async function getPhotos(camera: any, rovername: string): Promise<Photo[]> {
-    const response = await axios.get<Photo[]>(`http://localhost:8000/rovers/${rovername}/camera/${camera}`);
+  export async function getPhotos(camera: any, rovername: string, sol: number = 1000): Promise<Photo[]> {
+    const response = await axios.get<Photo[]>(`http://localhost:8000/rovers/${rovername}/camera/${camera}?sol=${sol}`);
     console.log(response.data);
     return response.data;
   };

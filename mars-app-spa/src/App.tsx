@@ -22,7 +22,7 @@ function App() {
     <div className="App-header">
       {/* <header className="App-header">
       </header> */}
-      <h1>Pictures from Mars</h1>
+      <h1>NASA Mars Rover Photos</h1>
       <div className = "App">
       <DropDownPhotos />
       </div>
