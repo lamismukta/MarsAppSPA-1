@@ -5,6 +5,7 @@ import { getPhotos } from "./getPhotosHelper";
 import { Camera } from "./getCameraHelper";
 import { PhotoContext } from "./DropDownAndPhotoComponent";
 import { StyledSelect } from "./Components/MarsImage/styles";
+import NumericInput from "react-numeric-input";
 
 const roverNames: SelectOption[] = [
   { value: "Curiosity", label: "Curiosity" },
@@ -43,6 +44,7 @@ const DropDown: React.FC = () => {
       <RoverProvider value={{ cameralist, rovername, cameraname, setcameralist, setrovername, setcameraname }}>
         <FirstChoice />
         <SecondChoice />
+        <SolInput />
       </RoverProvider>
     </div>
   );
@@ -72,8 +74,7 @@ const FirstChoice: React.FC = () => {
 };
 
 const SecondChoice: React.FC = () => {
-  let { cameralist, rovername , cameraname, setcameraname} = useContext(RoverContext);
-  let { photoList, setphotolist, sol} = useContext(PhotoContext);
+  var { cameralist, rovername , cameraname, setcameraname} = useContext(RoverContext);
   return (
     <div style={{width: '1000px'}}>
       Select a Camera
@@ -83,11 +84,30 @@ const SecondChoice: React.FC = () => {
         autosize={true}
         clearable={true}
         onChange={async (response) => {
-          setcameraname(cameraname);
-           photoList = await getPhotos(response?.value, rovername, sol);
-           setphotolist(photoList);
+        setcameraname(response ? response.value : "");
         }}
       />
+      </p>
+    </div>
+  );
+};
+
+const SolInput: React.FC = () => {
+  var { photoList, setphotolist, sol, setsol } = useContext(PhotoContext);
+  var { rovername, cameraname } = useContext(RoverContext);
+  return (
+    <div>
+      <p>Enter Sol</p>
+      <p>
+        <NumericInput
+          onChange={async (response) => {
+            console.log(cameraname)
+            setsol(response ?? 1000);
+            photoList = await getPhotos(cameraname, rovername, sol);
+            setphotolist(photoList);
+            console.log(photoList);
+          }}
+        />
       </p>
     </div>
   );

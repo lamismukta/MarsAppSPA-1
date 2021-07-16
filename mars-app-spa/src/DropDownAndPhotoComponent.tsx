@@ -14,7 +14,6 @@ export const PhotoContext = createContext({
 });
 
 const PhotoProvider = PhotoContext.Provider;
-const RoverProvider = RoverContext.Provider;
 
 export const DropDownPhotos: React.FC = () => {
   var [photoList, setPhotoList] = useState([
@@ -27,36 +26,12 @@ export const DropDownPhotos: React.FC = () => {
   function setsol(value: number) {
     setSol(value);
   }
-  var [cameralist, setCameraList] = useState([{ value: "", label: "" }]);
-  function setcameralist(value: SelectOption[]) {
-    setCameraList(value);
-  }
-  var [rovername, setRoverName] = useState("");
-  function setrovername(name: string) {
-    setRoverName(name);
-  }
-  var [cameraname, setCameraName] = useState("");
-  function setcameraname(name: string) {
-    setCameraName(name);
-  }
 
   return (
     <div>
       <PhotoProvider value={{ photoList, setphotolist, sol, setsol }}>
-        <RoverProvider
-          value={{
-            cameralist,
-            rovername,
-            cameraname,
-            setcameralist,
-            setrovername,
-            setcameraname,
-          }}
-        >
           <StyledDropDown />
-          <SolInput />
           <Photos />
-        </RoverProvider>
       </PhotoProvider>
     </div>
   );
@@ -75,26 +50,6 @@ const Photos: React.FC = () => {
         ))}
       </div>
     );
-};
-
-const SolInput: React.FC = () => {
-  var { photoList, setphotolist, sol, setsol } = useContext(PhotoContext);
-  var { rovername, cameraname } = useContext(RoverContext);
-  return (
-    <div>
-      <p>Enter Sol</p>
-      <p>
-        <NumericInput
-          onChange={async (response) => {
-            setsol(response ?? 1000);
-            photoList = await getPhotos(cameraname, rovername, sol);
-            setphotolist(photoList);
-            console.log(photoList);
-          }}
-        />
-      </p>
-    </div>
-  );
 };
 
 export default DropDownPhotos;
