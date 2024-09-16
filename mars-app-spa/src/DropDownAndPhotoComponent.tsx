@@ -1,6 +1,6 @@
 import React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import Select from "react-select";
+import { MarsImage, StyledDropDown } from "./Components/MarsImage/styles";
 import DropDown from "./DropDownComponents";
 import {Photo} from "./getPhotosHelper"
 
@@ -20,7 +20,7 @@ export const DropDownPhotos: React.FC = () => {
     return(
         <div>
         <Provider value = {{photoList, setphotolist}}>
-            <DropDown /> 
+            <StyledDropDown /> 
             <Photos />
         </Provider>
         </div>
@@ -32,9 +32,13 @@ export const DropDownPhotos: React.FC = () => {
 const Photos: React.FC = () => {
     var { photoList } = useContext(PhotoContext);
     const len = Math.min(photoList.length,5);
+    if( len === 0 ) { return(
+    <p> No photos found! </p>)} else 
     return(
         <div>
-        {photoList.slice(0,len).map((photo) => (<img src={photo.img_src}/>))}
+        {/* <View style={{padding: 1, alignSelf: 'flex-start'}}> */}
+        {photoList.slice(0,len).map((photo) => (<MarsImage src={photo.img_src} width = '15%' />))}
+        {/* </View> */}
         </div>
     )
 
